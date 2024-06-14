@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forex Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Real-Time Forex Data</h1>
+    <div id="forex-chart"></div>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/forex_data');
+            const data = await response.json();
+            
+            const results = data.results[0];
+            
+            const timestamps = data.results.map(result => new Date(result.t));
+            const rates = data.results.map(result => result.c);
+            
+            Plotly.newPlot('forex-chart', [{
+                x: timestamps,
+                y: rates,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'EUR/USD'
+            }], {
+                title: 'EUR/USD Exchange Rate',
+                xaxis: {
+                    title: 'Time'
+                },
+                yaxis: {
+                    title: 'Exchange Rate'
+                }
+            });
+        }
+
+        //async function fetchPrediction() {
+        //    const response = await fetch('/predict');
+        //    const prediction = await response.json();
+        //    document.getElementById('prediction').innerText = `Predicted Exchange Rate: ${prediction.prediction}`;
+        //}
+
+        fetchData();
+        //fetchPrediction();
+        //setInterval(fetchData, 60000);  // Refresh data every 60 seconds
+    </script>
+</body>
+</html>

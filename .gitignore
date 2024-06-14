@@ -1,0 +1,5 @@
+# Secrets
+*.key
+
+# MacOS
+.DS_Store
