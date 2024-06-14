@@ -13,17 +13,25 @@
             const response = await fetch('/forex_data');
             const data = await response.json();
             
+            console.log(JSON.stringify(data));
+
             const results = data.results[0];
             
             const timestamps = data.results.map(result => new Date(result.t));
-            const rates = data.results.map(result => result.c);
+            const open = data.results.map(result => result.o);
+            const high = data.results.map(result => result.h);
+            const low = data.results.map(result => result.l);
+            const close = data.results.map(result => result.c);
             
             Plotly.newPlot('forex-chart', [{
                 x: timestamps,
-                y: rates,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'EUR/USD'
+                open: open,
+                high: high,
+                low: low,
+                close: close,
+                type: 'candlestick',
+                xaxis: 'x',
+                yaxis: 'y'
             }], {
                 title: 'EUR/USD Exchange Rate',
                 xaxis: {
